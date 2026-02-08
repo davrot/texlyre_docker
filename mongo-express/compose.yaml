@@ -1,0 +1,24 @@
+services:
+  mongo-express:
+    image: mongo-express:latest
+    container_name: texlyre-mongo-express
+    hostname: texlyre-mongo-express
+    restart: always
+    ports:
+      - "7081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://texlyre-mongodb:27017/?replicaSet=texlyre
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=""
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=""
+
+      - ME_CONFIG_BASICAUTH=true
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+    networks:
+      - tex-network
+    profiles:
+      - debug
+
+networks:
+  tex-network:
+    external: true

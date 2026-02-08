@@ -1,0 +1,27 @@
+services:
+  redis:
+    image: "redis:8.4-alpine"
+    container_name: texlyre-redis
+    hostname: texlyre-redis
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    command: --save 60 1 --loglevel warning
+    volumes:
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - 6379
+    networks:
+      - tex-network
+    environment:
+      REDIS_AOF_PERSISTENCE: "true"
+
+networks:
+  tex-network:
+    external: true
+

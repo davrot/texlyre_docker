@@ -1,0 +1,28 @@
+services:
+  mongodb:
+    image: "mongo:8.0"
+    container_name: texlyre-mongodb
+    hostname: texlyre-mongodb
+    restart: always
+    healthcheck:
+      test: "mongosh --quiet --eval 'rs.hello().setName ? rs.hello().setName : rs.initiate({_id: \"texlyre\",members:[{_id: 0, host:\"texlyre-mongodb:27017\"}]})'"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    command: "--replSet texlyre"
+    volumes:
+      - ./data_db:/data/db
+      - ./data_configdb:/data/configdb
+      - ./backup:/backup
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - tex-network
+    expose: 
+      - 27017
+    environment:
+      - MONGO_INITDB_DATABASE=texlyre
+
+networks:
+  tex-network:
+    external: true

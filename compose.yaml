@@ -1,0 +1,41 @@
+services:
+
+  mongodb:
+    extends:
+      file: ./mongodb/compose.yaml
+      service: mongodb
+
+  redis:
+    extends:
+      file: ./redis/compose.yaml
+      service: redis
+
+  yjs-server:
+    extends:
+      file: ./yjs-server/compose.yaml
+      service: yjs-server
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  mongo-express:
+    extends:
+      file: ./mongo-express/compose.yaml
+      service: mongo-express
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  redis-commander:
+    extends:
+      file: ./redis-commander/compose.yaml
+      service: redis-commander
+    depends_on:
+      redis:
+        condition: service_healthy
+
+networks:
+  tex-network:
+    external: true

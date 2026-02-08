@@ -1,0 +1,25 @@
+services:
+  yjs-server:
+    build: ./yjs-server
+    container_name: texlyre-yjs-server
+    hostname: texlyre-yjs-server
+    restart: always
+    ports:
+      - "1234:1234"  # WebSocket port - needs to be accessible from outside
+    environment:
+      - MONGODB_URI=mongodb://texlyre-mongodb:27017/texlyre?replicaSet=texlyre
+      - REDIS_URL=redis://texlyre-redis:6379
+      - WS_PORT=1234
+      - NODE_ENV=production
+      - REDIS_CACHE_ENABLED=true
+      - REDIS_CACHE_TTL=3600
+      - MONGODB_FLUSH_SIZE=100
+      - MONGODB_MULTIPLE_COLLECTIONS=true
+    networks:
+      - tex-network
+    volumes:
+      - ./logs:/app/logs
+
+networks:
+  tex-network:
+    external: true

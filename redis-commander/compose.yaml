@@ -1,0 +1,20 @@
+services:
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: texlyre-redis-commander
+    hostname: texlyre-redis-commander
+    restart: always
+    ports:
+      - "7082:8081"
+    environment:
+      - REDIS_HOSTS=local:texlyre-redis:6379
+      - HTTP_USER=${REDIS_COMMANDER_USER}
+      - HTTP_PASSWORD=${REDIS_COMMANDER_PASSWORD}
+    networks:
+      - tex-network
+    profiles:
+      - debug
+
+networks:
+  tex-network:
+    external: true
