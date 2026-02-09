@@ -1,2 +1,2 @@
-docker compose up -d --build yjs-server
+docker compose up -d yjs-server
 

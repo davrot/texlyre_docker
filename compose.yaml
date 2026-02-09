@@ -38,15 +38,23 @@ services:
       redis:
         condition: service_healthy
 
+  minio:
+    extends:
+      file: ./minio/compose.yaml
+      service: minio
+
   texlyre-frontend:
     extends:
       file: ./texlyre-frontend/compose.yaml
       service: texlyre-frontend
     build:
       context: ./texlyre-frontend
-#    depends_on:
-#      yjs-server:
-#        condition: service_healthy
+    depends_on:
+      yjs-server:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
 
 networks:
   tex-network:

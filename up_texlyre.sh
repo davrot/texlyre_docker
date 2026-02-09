@@ -1,2 +1,2 @@
-docker compose up -d --build texlyre-frontend
+docker compose up -d texlyre-frontend
 
