@@ -14,6 +14,8 @@ services:
     extends:
       file: ./yjs-server/compose.yaml
       service: yjs-server
+    build:
+      context: ./yjs-server
     depends_on:
       mongodb:
         condition: service_healthy
@@ -35,6 +37,16 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+
+  texlyre-frontend:
+    extends:
+      file: ./texlyre-frontend/compose.yaml
+      service: texlyre-frontend
+    build:
+      context: ./texlyre-frontend
+#    depends_on:
+#      yjs-server:
+#        condition: service_healthy
 
 networks:
   tex-network:
